@@ -36,6 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 
     function clearInput() {
+        inputBase.value = '';
         inputPx.value = '';
         inputRem.value = '';
     }
