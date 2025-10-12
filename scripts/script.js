@@ -14,6 +14,10 @@ window.addEventListener('DOMContentLoaded', () => {
             const pxValue = event.target.value;
             inputRem.value = (pxValue / inputBase.value).toFixed(4);
         }
+
+        if (inputPx.value === '') {
+            inputRem.value = '';
+        }
     })
 
     inputRem.addEventListener('input', (event) => {
@@ -24,6 +28,10 @@ window.addEventListener('DOMContentLoaded', () => {
             error.style.display = 'none';
             const remValue = event.target.value;
             inputPx.value = (remValue * inputBase.value).toFixed(4);
+        }
+
+        if (inputRem.value === '') {
+            inputPx.value = '';
         }
     })
 
