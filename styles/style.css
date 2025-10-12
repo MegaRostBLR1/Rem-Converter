@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "Monserrat-Regular";
+    src: url("../fonts/Montserrat-Regular.ttf");
+}
+
+body {
+    font-family: 'Monserrat-Regular', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    background: #B9D5FD;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.title {
+    margin-bottom: 30px;
+}
+
+.input-container:not(:first-child) {
+    margin-top: 10px;
+}
+
+.input-label {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    display: flex;
+    align-items: center;
+    border: 2px solid #709FDC;
+    padding: 20px 15px;
+    border-radius: 10px;
+    font-family: 'Monserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    outline: none;
+    margin-top: 2px;
+}
+
+input:hover {
+    border: 3px solid #709FDC;
+    padding: 19px 14px;
+}
+
+.input-error {
+    display: none;
+    color: #f30000;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+button {
+    display: block;
+    padding: 20px 15px;
+    width: 100%;
+    cursor: pointer;
+    border: 2px solid #709FDC;
+    border-radius: 10px;
+    font-family: "Monserrat-Regular", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    outline: none;
+    margin-top: 20px;
+    background-color: #FFFFFF;
+}
+
+button:hover {
+    border: 3px solid #709FDC;
+    padding: 19px 14px;
+}
+
+.converter-author {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    font-size: 8px;
+}
+
+.converter-author__link {
+    text-decoration: none;
+    color: #000000;
+}

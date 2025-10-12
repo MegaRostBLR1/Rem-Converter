@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rem to Px</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<section class="main">
+    <div class="container">
+        <h1 class="title">Rem Конвертер</h1>
+        <div class="converter-body">
+            <div class="input-container">
+                <label class="input-label">Величина шрифта HTML документа
+                    <input class="input-base" type="number" name="input-base" value="16">
+                </label>
+            </div>
+            <div class="input-error">Введите величину шрифта</div>
+            <div class="input-container">
+                <label class="input-label">px
+                    <input class="input-px" type="number" name="input-px" value="16">
+                </label>
+            </div>
+            <div class="input-container">
+                <label class="input-label">rem
+                    <input class="input-rem" type="number" name="input-rem" value="1">
+                </label>
+            </div>
+            <div class="button-container">
+                <button class="button-clear">Очистить</button>
+            </div>
+            <div class="converter-author">Converter by&nbsp;<a class="converter-author__link" href="https://t.me/RostITFreelance" target="_blank">Rostislav Yakubovsky</a></div>
+        </div>
+    </div>
+</section>
+<script src="scripts/script.js"></script>
+</body>
+</html>
