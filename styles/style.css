@@ -115,3 +115,9 @@ button:hover {
     text-decoration: none;
     color: #000000;
 }
+
+@media screen and (max-width: 768px) {
+    .main {
+        height: 100vh;
+    }
+}
