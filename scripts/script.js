@@ -5,14 +5,47 @@ window.addEventListener('DOMContentLoaded', () => {
     const buttonClear = document.querySelector('.button-clear');
     const error = document.querySelector('.input-error');
 
+    function recalculateValues () {
+        if (isNaN(inputBase.value) || inputBase.value <= 0) {
+            error.style.display = 'block';
+            return;
+        } else {
+            error.style.display = 'none';
+        }
+
+        const hasRem = inputRem.value && !isNaN(inputRem.value);
+        const hasPx = inputPx.value && !isNaN(inputPx.value);
+
+        if (hasRem && hasPx) {
+            inputRem.value = (inputPx.value / inputBase.value).toFixed(4);
+        }
+
+        else if (hasPx) {
+            inputRem.value = (inputPx.value / inputBase.value).toFixed(4);
+        }
+
+        else if (hasRem) {
+            inputPx.value = (inputRem.value * inputBase.value).toFixed(4);
+        }
+    }
+
+    inputBase.addEventListener('input', (event) => {
+        if (event.target.value === '') {
+            inputRem.value = '';
+            inputPx.value = '';
+            error.style.display = 'none';
+        } else {
+            recalculateValues();
+        }
+    })
+
     inputPx.addEventListener('input', (event) => {
         if (isNaN(inputBase.value) || inputBase.value <= 0) {
             error.style.display = 'block';
             inputPx.value = '';
         } else {
             error.style.display = 'none';
-            const pxValue = event.target.value;
-            inputRem.value = (pxValue / inputBase.value).toFixed(4);
+            inputRem.value = (event.target.value / inputBase.value).toFixed(4);
         }
 
         if (inputPx.value === '') {
@@ -26,8 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
             inputRem.value = '';
         } else {
             error.style.display = 'none';
-            const remValue = event.target.value;
-            inputPx.value = (remValue * inputBase.value).toFixed(4);
+            inputPx.value = (event.target.value * inputBase.value).toFixed(4);
         }
 
         if (inputRem.value === '') {
@@ -35,11 +67,10 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    function clearInput() {
+    buttonClear.addEventListener('click', () => {
         inputBase.value = '';
         inputPx.value = '';
         inputRem.value = '';
-    }
-
-    buttonClear.addEventListener('click', clearInput);
+        error.style.display = 'none';
+    });
 })
