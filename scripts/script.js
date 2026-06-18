@@ -4,30 +4,99 @@ window.addEventListener('DOMContentLoaded', () => {
     const inputPx = document.querySelector('.input-px');
     const buttonClear = document.querySelector('.button-clear');
     const error = document.querySelector('.input-error');
+    const numericInputs = [inputBase, inputRem, inputPx];
 
-    function recalculateValues () {
-        if (isNaN(inputBase.value) || inputBase.value <= 0) {
-            error.style.display = 'block';
-            return;
-        } else {
-            error.style.display = 'none';
+    function sanitizeInput(value) {
+        let result = '';
+        let hasDot = false;
+
+        for (const char of value) {
+            if (char >= '0' && char <= '9') {
+                result += char;
+            } else if (char === '.' && !hasDot) {
+                result += char;
+                hasDot = true;
+            }
         }
 
-        const hasRem = inputRem.value && !isNaN(inputRem.value);
-        const hasPx = inputPx.value && !isNaN(inputPx.value);
+        return result;
+    }
 
-        if (hasRem && hasPx) {
-            inputRem.value = (inputPx.value / inputBase.value).toFixed(4);
+    function formatResult(num) {
+        if (!Number.isFinite(num)) {
+            return '';
         }
 
-        else if (hasPx) {
-            inputRem.value = (inputPx.value / inputBase.value).toFixed(4);
+        return num.toFixed(4).replace(/\.0000$/, '');
+    }
+
+    function parseNumericValue(input) {
+        const value = input.value.trim();
+
+        if (value === '' || value === '.') {
+            return NaN;
         }
 
-        else if (hasRem) {
-            inputPx.value = (inputRem.value * inputBase.value).toFixed(4);
+        return parseFloat(value);
+    }
+
+    function applySanitizedInput(input) {
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const oldValue = input.value;
+        const newValue = sanitizeInput(oldValue);
+
+        if (oldValue !== newValue) {
+            input.value = newValue;
+            const diff = oldValue.length - newValue.length;
+            input.setSelectionRange(
+                Math.max(0, start - diff),
+                Math.max(0, end - diff)
+            );
         }
     }
+
+    function isBaseValid() {
+        const baseValue = parseNumericValue(inputBase);
+
+        return Number.isFinite(baseValue) && baseValue > 0;
+    }
+
+    function recalculateValues() {
+        if (!isBaseValid()) {
+            error.style.display = 'block';
+            return;
+        }
+
+        error.style.display = 'none';
+
+        const baseValue = parseNumericValue(inputBase);
+        const remValue = parseNumericValue(inputRem);
+        const pxValue = parseNumericValue(inputPx);
+        const hasRem = inputRem.value !== '' && Number.isFinite(remValue);
+        const hasPx = inputPx.value !== '' && Number.isFinite(pxValue);
+
+        if (hasRem && hasPx) {
+            inputRem.value = formatResult(pxValue / baseValue);
+        } else if (hasPx) {
+            inputRem.value = formatResult(pxValue / baseValue);
+        } else if (hasRem) {
+            inputPx.value = formatResult(remValue * baseValue);
+        }
+    }
+
+    numericInputs.forEach((input) => {
+        input.addEventListener('input', () => {
+            applySanitizedInput(input);
+        });
+
+        input.addEventListener('copy', (event) => {
+            const cleanValue = sanitizeInput(input.value);
+
+            event.clipboardData.setData('text/plain', cleanValue);
+            event.preventDefault();
+        });
+    });
 
     inputBase.addEventListener('input', (event) => {
         if (event.target.value === '') {
@@ -37,35 +106,45 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
             recalculateValues();
         }
-    })
+    });
 
     inputPx.addEventListener('input', (event) => {
-        if (isNaN(inputBase.value) || inputBase.value <= 0) {
+        if (!isBaseValid()) {
             error.style.display = 'block';
             inputPx.value = '';
         } else {
             error.style.display = 'none';
-            inputRem.value = (event.target.value / inputBase.value).toFixed(4);
+
+            const pxValue = parseNumericValue(event.target);
+
+            if (Number.isFinite(pxValue)) {
+                inputRem.value = formatResult(pxValue / parseNumericValue(inputBase)) + 'rem;';
+            }
         }
 
         if (inputPx.value === '') {
             inputRem.value = '';
         }
-    })
+    });
 
     inputRem.addEventListener('input', (event) => {
-        if (isNaN(inputBase.value) || inputBase.value <= 0) {
+        if (!isBaseValid()) {
             error.style.display = 'block';
             inputRem.value = '';
         } else {
             error.style.display = 'none';
-            inputPx.value = (event.target.value * inputBase.value).toFixed(4);
+
+            const remValue = parseNumericValue(event.target);
+
+            if (Number.isFinite(remValue)) {
+                inputPx.value = formatResult(remValue * parseNumericValue(inputBase)) + 'px;';
+            }
         }
 
         if (inputRem.value === '') {
             inputPx.value = '';
         }
-    })
+    });
 
     buttonClear.addEventListener('click', () => {
         inputBase.value = '';
@@ -73,4 +152,4 @@ window.addEventListener('DOMContentLoaded', () => {
         inputRem.value = '';
         error.style.display = 'none';
     });
-})
+});
