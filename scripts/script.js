@@ -56,6 +56,27 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function getCopyValue(input) {
+        const isFullSelection =
+            input.selectionStart === 0 && input.selectionEnd === input.value.length;
+        const selected = input.value.substring(input.selectionStart, input.selectionEnd);
+        const cleanValue = sanitizeInput(selected || input.value);
+
+        if (!cleanValue) {
+            return '';
+        }
+
+        if (isFullSelection && input === inputPx) {
+            return `${cleanValue}px;`;
+        }
+
+        if (isFullSelection && input === inputRem) {
+            return `${cleanValue}rem;`;
+        }
+
+        return cleanValue;
+    }
+
     function isBaseValid() {
         const baseValue = parseNumericValue(inputBase);
 
@@ -91,9 +112,9 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         input.addEventListener('copy', (event) => {
-            const cleanValue = sanitizeInput(input.value);
+            const copyValue = getCopyValue(input);
 
-            event.clipboardData.setData('text/plain', cleanValue);
+            event.clipboardData.setData('text/plain', copyValue);
             event.preventDefault();
         });
     });
