@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
             copyButton.dataset.copyValue = remValue;
             copyButton.innerHTML = `
                 <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
-                    <rect x="9" y="9" width="10" height="10" rx="2"></rect>
+                    <rect x="8" y="8" width="11" height="11" rx="2"></rect>
                     <path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2 2h8a2 2 0 0 1 2 2v1"></path>
                 </svg>
             `;
