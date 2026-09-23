@@ -194,11 +194,9 @@ button:hover {
 }
 
 .button-history-clear {
-    width: auto;
-    margin: 20px 0 0;
-    padding: 8px 12px;
-    font-size: 12px;
-    align-self: stretch;
+    width: 100%;
+    margin: 8px 0 0;
+    padding: 20px 15px;
 }
 
 .conversion-history__list {
@@ -221,7 +219,9 @@ button:hover {
 }
 
 .button-history-copy {
-    flex: 0 0 42px;
+    position: absolute;
+    top: 50%;
+    right: 8px;
     display: grid;
     width: 42px;
     min-height: 42px;
@@ -230,6 +230,7 @@ button:hover {
     border: 0;
     border-radius: 8px;
     place-items: center;
+    transform: translateY(-50%);
     background: transparent;
     color: #709FDC;
     cursor: pointer;
@@ -243,7 +244,7 @@ button:hover {
 }
 
 .button-history-copy:active {
-    transform: none;
+    transform: translateY(-50%);
 }
 
 .button-history-copy svg {
