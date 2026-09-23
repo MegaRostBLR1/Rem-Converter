@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const buttonClear = document.querySelector('.button-clear');
     const copyButtons = document.querySelectorAll('.button-copy');
     const error = document.querySelector('.input-error');
+    const historyList = document.querySelector('.conversion-history__list');
     const numericInputs = [inputBase, inputPx, inputRem];
 
     function getInputUnit(input) {
@@ -65,6 +66,56 @@ window.addEventListener('DOMContentLoaded', () => {
         const baseValue = getNumericValue(inputBase);
 
         return Number.isFinite(baseValue) && baseValue > 0;
+    }
+
+    const HISTORY_STORAGE_KEY = 'rem-converter-history';
+
+    function getHistory() {
+        try {
+            const history = JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY));
+            return Array.isArray(history) ? history : [];
+        } catch {
+            return [];
+        }
+    }
+
+    function renderHistory(history = getHistory()) {
+        historyList.replaceChildren();
+
+        history.forEach(({px, rem}) => {
+            const item = document.createElement('div');
+            item.className = 'conversion-history__item';
+            item.textContent = `${px}px = ${rem}rem`;
+            historyList.append(item);
+        });
+    }
+
+    function saveCurrentConversion() {
+        const pxValue = getNumericValue(inputPx);
+        const remValue = getNumericValue(inputRem);
+
+        if (!Number.isFinite(pxValue) || !Number.isFinite(remValue)) {
+            return;
+        }
+
+        const px = formatResult(pxValue);
+        const rem = formatResult(remValue);
+        const history = getHistory();
+        const isDuplicate = history.some((item) => item.px === px && item.rem === rem);
+
+        if (isDuplicate) {
+            return;
+        }
+
+        history.push({px, rem});
+        history.sort((a, b) => Number(b.px) - Number(a.px));
+
+        try {
+            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history));
+            renderHistory(history);
+        } catch {
+            return;
+        }
     }
 
     function setError(isVisible) {
@@ -201,9 +252,17 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    renderHistory();
+
     inputBase.addEventListener('input', convertFromBase);
-    inputPx.addEventListener('input', convertFromPx);
-    inputRem.addEventListener('input', convertFromRem);
+    inputPx.addEventListener('input', () => {
+        convertFromPx();
+        saveCurrentConversion();
+    });
+    inputRem.addEventListener('input', () => {
+        convertFromRem();
+        saveCurrentConversion();
+    });
 
     buttonClear.addEventListener('click', () => {
         numericInputs.forEach((input) => {
