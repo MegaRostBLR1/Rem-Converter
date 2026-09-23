@@ -32,15 +32,23 @@ body {
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: minmax(0, 320px) 320px;
+    align-items: start;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .title {
-    margin-bottom: 30px;
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+.converter-body {
+    width: 100%;
 }
 
 .input-container:not(:first-child) {
@@ -257,6 +265,14 @@ button:hover {
 @media (max-width: 800px) {
     .page-layout {
         flex-direction: column;
+    }
+
+    .container {
+        grid-template-columns: minmax(0, 440px);
+    }
+
+    .title {
+        grid-column: 1;
     }
 
     .conversion-history {
