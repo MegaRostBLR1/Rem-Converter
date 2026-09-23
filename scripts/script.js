@@ -46,7 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
             return '';
         }
 
-        const formattedValue = value.toFixed(4).replace(/\.0000$/, '');
+        const formattedValue = value.toFixed(4).replace(/\.?0+$/, '');
 
         return formattedValue + unit;
     }
