@@ -197,8 +197,6 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 420px;
-    overflow-y: auto;
 }
 
 .conversion-history__item {
