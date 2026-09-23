@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const inputPx = document.querySelector('.input-px');
     const inputRem = document.querySelector('.input-rem');
     const buttonClear = document.querySelector('.button-clear');
+    const copyButtons = document.querySelectorAll('.button-copy');
     const error = document.querySelector('.input-error');
     const numericInputs = [inputBase, inputPx, inputRem];
 
@@ -154,6 +155,39 @@ window.addEventListener('DOMContentLoaded', () => {
         return isFullSelection ? `${value}${unit};` : value;
     }
 
+    async function copyInputValue(input, button) {
+        const value = input.value.trim();
+
+        if (!value) {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(value);
+        } catch {
+            const textArea = document.createElement('textarea');
+
+            textArea.value = value;
+            textArea.setAttribute('readonly', '');
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.append(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            textArea.remove();
+        }
+
+        button.classList.add('is-copied');
+        button.setAttribute('aria-label', 'Значение скопировано');
+        button.setAttribute('title', 'Значение скопировано');
+
+        setTimeout(() => {
+            button.classList.remove('is-copied');
+            button.setAttribute('aria-label', 'Копировать значение');
+            button.setAttribute('title', 'Копировать значение');
+        }, 1200);
+    }
+
     numericInputs.forEach((input) => {
         input.addEventListener('input', () => {
             sanitizeInputValue(input);
@@ -165,6 +199,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
             event.clipboardData.setData('text/plain', copyValue);
             event.preventDefault();
+        });
+    });
+
+    copyButtons.forEach((button) => {
+        const input = document.getElementById(button.dataset.copyTarget);
+
+        button.addEventListener('click', () => {
+            copyInputValue(input, button);
         });
     });
 
