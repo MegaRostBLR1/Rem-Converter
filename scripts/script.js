@@ -7,11 +7,27 @@ window.addEventListener('DOMContentLoaded', () => {
     const error = document.querySelector('.input-error');
     const numericInputs = [inputBase, inputPx, inputRem];
 
-    function sanitizeInput(value) {
+    function getInputUnit(input) {
+        if (input === inputPx) {
+            return 'px';
+        }
+
+        if (input === inputRem) {
+            return 'rem';
+        }
+
+        return '';
+    }
+
+    function sanitizeInput(value, input) {
+        const unit = getInputUnit(input);
+        const valueWithoutUnit = unit
+            ? value.replace(new RegExp(unit + '$', 'i'), '')
+            : value;
         let result = '';
         let hasDecimalPoint = false;
 
-        for (const char of value) {
+        for (const char of valueWithoutUnit) {
             if (char >= '0' && char <= '9') {
                 result += char;
             } else if (char === '.' && !hasDecimalPoint) {
@@ -20,19 +36,23 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        return result;
+        return unit && result ? result + unit : result;
     }
 
-    function formatResult(value) {
+    function formatResult(value, unit = '') {
         if (!Number.isFinite(value)) {
             return '';
         }
 
-        return value.toFixed(4).replace(/\.0000$/, '');
+        const formattedValue = value.toFixed(4).replace(/\.0000$/, '');
+
+        return formattedValue + unit;
     }
 
     function getNumericValue(input) {
-        const value = input.value.trim();
+        const value = input.value
+            .trim()
+            .replace(/(px|rem)$/i, '');
 
         if (!value || value === '.') {
             return NaN;
@@ -55,20 +75,16 @@ window.addEventListener('DOMContentLoaded', () => {
         const start = input.selectionStart ?? input.value.length;
         const end = input.selectionEnd ?? input.value.length;
         const oldValue = input.value;
-        const newValue = sanitizeInput(oldValue);
+        const newValue = sanitizeInput(oldValue, input);
 
         if (oldValue === newValue) {
             return;
         }
 
-        const removedBeforeCursor = oldValue
-            .slice(0, start)
-            .length - newValue.slice(0, start).length;
-
         input.value = newValue;
         input.setSelectionRange(
-            Math.max(0, start - removedBeforeCursor),
-            Math.max(0, end - removedBeforeCursor)
+            Math.min(start, newValue.length),
+            Math.min(end, newValue.length)
         );
     }
 
@@ -90,7 +106,7 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        inputRem.value = formatResult(pxValue / getNumericValue(inputBase));
+        inputRem.value = formatResult(pxValue / getNumericValue(inputBase), 'rem');
         setError(false);
     }
 
@@ -108,7 +124,7 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        inputPx.value = formatResult(remValue * getNumericValue(inputBase));
+        inputPx.value = formatResult(remValue * getNumericValue(inputBase), 'px');
         setError(false);
     }
 
@@ -136,23 +152,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         setError(false);
-    }
-
-    function getCopyValue(input, unit) {
-        const isFullSelection =
-            input.selectionStart === 0 &&
-            input.selectionEnd === input.value.length;
-        const selectedValue = input.value.substring(
-            input.selectionStart ?? 0,
-            input.selectionEnd ?? input.value.length
-        );
-        const value = sanitizeInput(selectedValue || input.value);
-
-        if (!value) {
-            return '';
-        }
-
-        return isFullSelection ? `${value}${unit};` : value;
     }
 
     async function copyInputValue(input, button) {
@@ -191,14 +190,6 @@ window.addEventListener('DOMContentLoaded', () => {
     numericInputs.forEach((input) => {
         input.addEventListener('input', () => {
             sanitizeInputValue(input);
-        });
-
-        input.addEventListener('copy', (event) => {
-            const unit = input === inputPx ? 'px' : input === inputRem ? 'rem' : '';
-            const copyValue = getCopyValue(input, unit);
-
-            event.clipboardData.setData('text/plain', copyValue);
-            event.preventDefault();
         });
     });
 
