@@ -217,13 +217,16 @@ button:hover {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    min-height: 42px;
-    padding: 8px 60px 8px 10px;
-    border-radius: 6px;
-    background: #EDF4FF;
-    font-size: 14px;
+    width: 100%;
+    min-height: 62px;
+    padding: 20px 58px 20px 15px;
+    border: 2px solid #709FDC;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    font-family: "Montserrat-Regular", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
 }
 
 .button-history-copy {
