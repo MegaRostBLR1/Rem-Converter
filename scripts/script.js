@@ -1,176 +1,183 @@
 window.addEventListener('DOMContentLoaded', () => {
     const inputBase = document.querySelector('.input-base');
-    const inputRem = document.querySelector('.input-rem');
     const inputPx = document.querySelector('.input-px');
+    const inputRem = document.querySelector('.input-rem');
     const buttonClear = document.querySelector('.button-clear');
     const error = document.querySelector('.input-error');
-    const numericInputs = [inputBase, inputRem, inputPx];
+    const numericInputs = [inputBase, inputPx, inputRem];
 
     function sanitizeInput(value) {
         let result = '';
-        let hasDot = false;
+        let hasDecimalPoint = false;
 
         for (const char of value) {
             if (char >= '0' && char <= '9') {
                 result += char;
-            } else if (char === '.' && !hasDot) {
+            } else if (char === '.' && !hasDecimalPoint) {
                 result += char;
-                hasDot = true;
+                hasDecimalPoint = true;
             }
         }
 
         return result;
     }
 
-    function formatResult(num) {
-        if (!Number.isFinite(num)) {
+    function formatResult(value) {
+        if (!Number.isFinite(value)) {
             return '';
         }
 
-        return num.toFixed(4).replace(/\.0000$/, '');
+        return value.toFixed(4).replace(/\.0000$/, '');
     }
 
-    function parseNumericValue(input) {
+    function getNumericValue(input) {
         const value = input.value.trim();
 
-        if (value === '' || value === '.') {
+        if (!value || value === '.') {
             return NaN;
         }
 
-        return parseFloat(value);
-    }
-
-    function applySanitizedInput(input) {
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-        const oldValue = input.value;
-        const newValue = sanitizeInput(oldValue);
-
-        if (oldValue !== newValue) {
-            input.value = newValue;
-            const diff = oldValue.length - newValue.length;
-            input.setSelectionRange(
-                Math.max(0, start - diff),
-                Math.max(0, end - diff)
-            );
-        }
-    }
-
-    function getCopyValue(input) {
-        const isFullSelection =
-            input.selectionStart === 0 && input.selectionEnd === input.value.length;
-        const selected = input.value.substring(input.selectionStart, input.selectionEnd);
-        const cleanValue = sanitizeInput(selected || input.value);
-
-        if (!cleanValue) {
-            return '';
-        }
-
-        if (isFullSelection && input === inputPx) {
-            return `${cleanValue}px;`;
-        }
-
-        if (isFullSelection && input === inputRem) {
-            return `${cleanValue}rem;`;
-        }
-
-        return cleanValue;
+        return Number(value);
     }
 
     function isBaseValid() {
-        const baseValue = parseNumericValue(inputBase);
+        const baseValue = getNumericValue(inputBase);
 
         return Number.isFinite(baseValue) && baseValue > 0;
     }
 
-    function recalculateValues() {
-        if (!isBaseValid()) {
-            error.style.display = 'block';
+    function setError(isVisible) {
+        error.classList.toggle('is-visible', isVisible);
+    }
+
+    function sanitizeInputValue(input) {
+        const start = input.selectionStart ?? input.value.length;
+        const end = input.selectionEnd ?? input.value.length;
+        const oldValue = input.value;
+        const newValue = sanitizeInput(oldValue);
+
+        if (oldValue === newValue) {
             return;
         }
 
-        error.style.display = 'none';
+        const removedBeforeCursor = oldValue
+            .slice(0, start)
+            .length - newValue.slice(0, start).length;
 
-        const baseValue = parseNumericValue(inputBase);
-        const remValue = parseNumericValue(inputRem);
-        const pxValue = parseNumericValue(inputPx);
-        const hasRem = inputRem.value !== '' && Number.isFinite(remValue);
-        const hasPx = inputPx.value !== '' && Number.isFinite(pxValue);
+        input.value = newValue;
+        input.setSelectionRange(
+            Math.max(0, start - removedBeforeCursor),
+            Math.max(0, end - removedBeforeCursor)
+        );
+    }
 
-        if (hasRem && hasPx) {
-            inputRem.value = formatResult(pxValue / baseValue);
-        } else if (hasPx) {
-            inputRem.value = formatResult(pxValue / baseValue);
-        } else if (hasRem) {
-            inputPx.value = formatResult(remValue * baseValue);
+    function clearConvertedValue(input) {
+        input.value = '';
+    }
+
+    function convertFromPx() {
+        if (!isBaseValid()) {
+            clearConvertedValue(inputRem);
+            setError(true);
+            return;
         }
+
+        const pxValue = getNumericValue(inputPx);
+
+        if (!Number.isFinite(pxValue)) {
+            clearConvertedValue(inputRem);
+            return;
+        }
+
+        inputRem.value = formatResult(pxValue / getNumericValue(inputBase));
+        setError(false);
+    }
+
+    function convertFromRem() {
+        if (!isBaseValid()) {
+            clearConvertedValue(inputPx);
+            setError(true);
+            return;
+        }
+
+        const remValue = getNumericValue(inputRem);
+
+        if (!Number.isFinite(remValue)) {
+            clearConvertedValue(inputPx);
+            return;
+        }
+
+        inputPx.value = formatResult(remValue * getNumericValue(inputBase));
+        setError(false);
+    }
+
+    function convertFromBase() {
+        if (!inputBase.value.trim()) {
+            clearConvertedValue(inputPx);
+            clearConvertedValue(inputRem);
+            setError(false);
+            return;
+        }
+
+        if (!isBaseValid()) {
+            setError(true);
+            return;
+        }
+
+        if (inputPx.value.trim()) {
+            convertFromPx();
+            return;
+        }
+
+        if (inputRem.value.trim()) {
+            convertFromRem();
+            return;
+        }
+
+        setError(false);
+    }
+
+    function getCopyValue(input, unit) {
+        const isFullSelection =
+            input.selectionStart === 0 &&
+            input.selectionEnd === input.value.length;
+        const selectedValue = input.value.substring(
+            input.selectionStart ?? 0,
+            input.selectionEnd ?? input.value.length
+        );
+        const value = sanitizeInput(selectedValue || input.value);
+
+        if (!value) {
+            return '';
+        }
+
+        return isFullSelection ? `${value}${unit};` : value;
     }
 
     numericInputs.forEach((input) => {
         input.addEventListener('input', () => {
-            applySanitizedInput(input);
+            sanitizeInputValue(input);
         });
 
         input.addEventListener('copy', (event) => {
-            const copyValue = getCopyValue(input);
+            const unit = input === inputPx ? 'px' : input === inputRem ? 'rem' : '';
+            const copyValue = getCopyValue(input, unit);
 
             event.clipboardData.setData('text/plain', copyValue);
             event.preventDefault();
         });
     });
 
-    inputBase.addEventListener('input', (event) => {
-        if (event.target.value === '') {
-            inputRem.value = '';
-            inputPx.value = '';
-            error.style.display = 'none';
-        } else {
-            recalculateValues();
-        }
-    });
-
-    inputPx.addEventListener('input', (event) => {
-        if (!isBaseValid()) {
-            error.style.display = 'block';
-            inputPx.value = '';
-        } else {
-            error.style.display = 'none';
-
-            const pxValue = parseNumericValue(event.target);
-
-            if (Number.isFinite(pxValue)) {
-                inputRem.value = formatResult(pxValue / parseNumericValue(inputBase)) + 'rem;';
-            }
-        }
-
-        if (inputPx.value === '') {
-            inputRem.value = '';
-        }
-    });
-
-    inputRem.addEventListener('input', (event) => {
-        if (!isBaseValid()) {
-            error.style.display = 'block';
-            inputRem.value = '';
-        } else {
-            error.style.display = 'none';
-
-            const remValue = parseNumericValue(event.target);
-
-            if (Number.isFinite(remValue)) {
-                inputPx.value = formatResult(remValue * parseNumericValue(inputBase)) + 'px;';
-            }
-        }
-
-        if (inputRem.value === '') {
-            inputPx.value = '';
-        }
-    });
+    inputBase.addEventListener('input', convertFromBase);
+    inputPx.addEventListener('input', convertFromPx);
+    inputRem.addEventListener('input', convertFromRem);
 
     buttonClear.addEventListener('click', () => {
-        inputBase.value = '';
-        inputPx.value = '';
-        inputRem.value = '';
-        error.style.display = 'none';
+        numericInputs.forEach((input) => {
+            input.value = '';
+        });
+
+        setError(false);
+        inputBase.focus();
     });
 });
