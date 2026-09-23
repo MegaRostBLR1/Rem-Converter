@@ -45,10 +45,15 @@ body {
 .title {
     grid-column: 1 / -1;
     margin-bottom: 0;
+    text-align: center;
 }
 
 .converter-body {
     width: 100%;
+    padding: 20px;
+    border: 2px solid #709FDC;
+    border-radius: 10px;
+    background-color: #FFFFFF;
 }
 
 .input-container:not(:first-child) {
@@ -181,7 +186,7 @@ button:hover {
 }
 
 .conversion-history {
-    width: min(100%, 320px);
+    width: 100%;
     padding: 20px;
     border: 2px solid #709FDC;
     border-radius: 10px;
@@ -275,7 +280,8 @@ button:hover {
         grid-column: 1;
     }
 
+    .converter-body,
     .conversion-history {
-        width: min(100%, 440px);
+        width: 100%;
     }
 }
