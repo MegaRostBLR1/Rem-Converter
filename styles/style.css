@@ -61,8 +61,8 @@ body {
 }
 
 .input-label {
-    display: flex;
-    flex-direction: column;
+    display: block;
+    white-space: nowrap;
 }
 
 .input-wrapper {
@@ -204,6 +204,7 @@ button:hover {
 .conversion-history__title {
     margin: 0;
     font-size: 18px;
+    font-weight: 400;
 }
 
 .conversion-history__list {
