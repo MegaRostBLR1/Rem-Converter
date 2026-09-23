@@ -118,6 +118,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let saveTimer;
+
+    function scheduleSave() {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(saveCurrentConversion, 2000);
+    }
+
     function setError(isVisible) {
         error.classList.toggle('is-visible', isVisible);
     }
@@ -257,11 +264,11 @@ window.addEventListener('DOMContentLoaded', () => {
     inputBase.addEventListener('input', convertFromBase);
     inputPx.addEventListener('input', () => {
         convertFromPx();
-        saveCurrentConversion();
+        scheduleSave();
     });
     inputRem.addEventListener('input', () => {
         convertFromRem();
-        saveCurrentConversion();
+        scheduleSave();
     });
 
     buttonClear.addEventListener('click', () => {
