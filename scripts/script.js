@@ -253,14 +253,16 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         button.classList.add('is-copied');
+        button.dataset.tooltip = 'Скопировано';
         button.setAttribute('aria-label', 'Значение скопировано');
         button.setAttribute('title', 'Значение скопировано');
 
         setTimeout(() => {
             button.classList.remove('is-copied');
+            delete button.dataset.tooltip;
             button.setAttribute('aria-label', 'Копировать значение');
             button.setAttribute('title', 'Копировать значение');
-        }, 1200);
+        }, 1000);
     }
 
     numericInputs.forEach((input) => {
@@ -302,14 +304,16 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         button.classList.add('is-copied');
+        button.dataset.tooltip = 'Скопировано';
         button.setAttribute('aria-label', 'Значение скопировано');
         button.title = 'Значение скопировано';
 
         setTimeout(() => {
             button.classList.remove('is-copied');
+            delete button.dataset.tooltip;
             button.setAttribute('aria-label', 'Копировать ' + value);
             button.title = 'Копировать значение';
-        }, 1200);
+        }, 1000);
     });
 
     buttonHistoryClear.addEventListener('click', () => {
