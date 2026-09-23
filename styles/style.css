@@ -107,6 +107,7 @@ button {
 
 button:hover {
     border: 3px solid #709FDC;
+    padding: 19px 15px;
 }
 
 .button-copy {
