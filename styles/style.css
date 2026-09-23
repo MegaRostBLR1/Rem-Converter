@@ -193,13 +193,6 @@ button:hover {
     font-size: 18px;
 }
 
-.button-history-clear {
-    margin: 8px 0 0;
-    padding: 18px 12px;
-    font-size: 12px;
-    align-self: stretch;
-}
-
 .conversion-history__list {
     display: flex;
     flex-direction: column;
