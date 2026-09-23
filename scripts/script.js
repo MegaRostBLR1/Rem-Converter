@@ -158,7 +158,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         inputRem.value = formatResult(pxValue / getNumericValue(inputBase), 'rem');
-        saveCurrentConversion();
         setError(false);
     }
 
@@ -177,7 +176,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         inputPx.value = formatResult(remValue * getNumericValue(inputBase), 'px');
-        saveCurrentConversion();
         setError(false);
     }
 
@@ -257,8 +255,14 @@ window.addEventListener('DOMContentLoaded', () => {
     renderHistory();
 
     inputBase.addEventListener('input', convertFromBase);
-    inputPx.addEventListener('input', convertFromPx);
-    inputRem.addEventListener('input', convertFromRem);
+    inputPx.addEventListener('input', () => {
+        convertFromPx();
+        saveCurrentConversion();
+    });
+    inputRem.addEventListener('input', () => {
+        convertFromRem();
+        saveCurrentConversion();
+    });
 
     buttonClear.addEventListener('click', () => {
         numericInputs.forEach((input) => {
