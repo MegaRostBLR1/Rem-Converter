@@ -123,7 +123,8 @@ button:hover {
     padding: 19px 15px;
 }
 
-.button-copy {
+.button-copy,
+.button-history-copy {
     position: absolute;
     top: 50%;
     right: 8px;
@@ -141,18 +142,21 @@ button:hover {
     cursor: pointer;
 }
 
-.button-copy:hover {
+.button-copy:hover,
+.button-history-copy:hover {
     border: 0;
     padding: 8px;
     background: #edf4ff;
     color: #709FDC;
 }
 
-.button-copy:active {
+.button-copy:active,
+.button-history-copy:active {
     transform: translateY(-50%);
 }
 
-.button-copy svg {
+.button-copy svg,
+.button-history-copy svg {
     width: 22px;
     height: 22px;
     fill: none;
@@ -162,8 +166,35 @@ button:hover {
     stroke-width: 1.8;
 }
 
-.button-copy.is-copied {
+.button-copy.is-copied,
+.button-history-copy.is-copied {
     color: #709FDC;
+}
+
+.button-copy::after,
+.button-history-copy::after {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #709FDC;
+    color: #FFFFFF;
+    content: attr(data-tooltip);
+    font-family: "Montserrat-Regular", sans-serif;
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.button-copy[data-tooltip]::after,
+.button-history-copy[data-tooltip]::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
 }
 
 .converter-author {
@@ -227,49 +258,6 @@ button:hover {
     font-weight: 400;
     font-size: 16px;
     line-height: 130%;
-}
-
-.button-history-copy {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    display: grid;
-    width: 42px;
-    min-height: 42px;
-    margin: 0;
-    padding: 8px;
-    border: 0;
-    border-radius: 8px;
-    place-items: center;
-    transform: translateY(-50%);
-    background: transparent;
-    color: #709FDC;
-    cursor: pointer;
-}
-
-.button-history-copy:hover {
-    border: 0;
-    padding: 8px;
-    background: #edf4ff;
-    color: #709FDC;
-}
-
-.button-history-copy:active {
-    transform: translateY(-50%);
-}
-
-.button-history-copy svg {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: currentColor;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.8;
-}
-
-.button-history-copy.is-copied {
-    color: #709FDC;
 }
 
 @media (max-width: 800px) {

@@ -98,8 +98,8 @@ window.addEventListener('DOMContentLoaded', () => {
             copyButton.dataset.copyValue = remValue;
             copyButton.innerHTML = `
                 <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
-                    <rect x="9" y="9" width="10" height="10" rx="2"></rect>
-                    <path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2 2v8"></path>
+                    <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                    <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
                 </svg>
             `;
 
@@ -253,14 +253,16 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         button.classList.add('is-copied');
+        button.dataset.tooltip = 'Скопировано';
         button.setAttribute('aria-label', 'Значение скопировано');
         button.setAttribute('title', 'Значение скопировано');
 
         setTimeout(() => {
             button.classList.remove('is-copied');
+            delete button.dataset.tooltip;
             button.setAttribute('aria-label', 'Копировать значение');
             button.setAttribute('title', 'Копировать значение');
-        }, 1200);
+        }, 1000);
     }
 
     numericInputs.forEach((input) => {
@@ -302,14 +304,16 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         button.classList.add('is-copied');
+        button.dataset.tooltip = 'Скопировано';
         button.setAttribute('aria-label', 'Значение скопировано');
         button.title = 'Значение скопировано';
 
         setTimeout(() => {
             button.classList.remove('is-copied');
+            delete button.dataset.tooltip;
             button.setAttribute('aria-label', 'Копировать ' + value);
             button.title = 'Копировать значение';
-        }, 1200);
+        }, 1000);
     });
 
     buttonHistoryClear.addEventListener('click', () => {
