@@ -123,7 +123,7 @@ button:hover {
     border: 0;
     padding: 8px;
     background: #edf4ff;
-    color: #4f87d0;
+    color: #709FDC;
 }
 
 .button-copy:active {
@@ -141,7 +141,7 @@ button:hover {
 }
 
 .button-copy.is-copied {
-    color: #248a52;
+    color: #709FDC;
 }
 
 .converter-author {

@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const numericInputs = [inputBase, inputPx, inputRem];
 
     function getInputUnit(input) {
-        if (input === inputPx) {
+        if (input === inputBase || input === inputPx) {
             return 'px';
         }
 
