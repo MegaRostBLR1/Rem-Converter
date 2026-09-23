@@ -107,7 +107,6 @@ button {
 
 button:hover {
     border: 3px solid #709FDC;
-    padding: 19px 14px;
 }
 
 .button-copy {
@@ -194,9 +193,10 @@ button:hover {
 }
 
 .button-history-clear {
-    width: 100%;
     margin: 8px 0 0;
-    padding: 20px 15px;
+    padding: 18px 12px;
+    font-size: 12px;
+    align-self: stretch;
 }
 
 .conversion-history__list {
