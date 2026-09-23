@@ -180,9 +180,24 @@ button:hover {
     background-color: #FFFFFF;
 }
 
-.conversion-history__title {
+.conversion-history__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     margin-bottom: 15px;
+}
+
+.conversion-history__title {
+    margin: 0;
     font-size: 18px;
+}
+
+.button-history-clear {
+    width: auto;
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 12px;
 }
 
 .conversion-history__list {
@@ -194,10 +209,50 @@ button:hover {
 }
 
 .conversion-history__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     padding: 8px 10px;
     border-radius: 6px;
     background: #EDF4FF;
     font-size: 14px;
+}
+
+.button-history-copy {
+    flex: 0 0 32px;
+    display: grid;
+    width: 32px;
+    min-height: 32px;
+    margin: 0;
+    padding: 6px;
+    border: 0;
+    border-radius: 6px;
+    place-items: center;
+    background: transparent;
+    color: #709FDC;
+    cursor: pointer;
+}
+
+.button-history-copy:hover {
+    border: 0;
+    padding: 6px;
+    background: #dceaff;
+    color: #709FDC;
+}
+
+.button-history-copy svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.button-history-copy.is-copied {
+    color: #709FDC;
 }
 
 @media (max-width: 800px) {
