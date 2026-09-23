@@ -57,18 +57,21 @@ body {
 }
 
 .input-label {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: block;
+    margin-bottom: 6px;
     color: #34415a;
     font-size: 14px;
     line-height: 1.35;
 }
 
+.input-wrapper {
+    position: relative;
+}
+
 input {
     width: 100%;
     min-height: 60px;
-    padding: 15px;
+    padding: 15px 58px 15px 15px;
     border: 2px solid #709fdc;
     border-radius: 12px;
     background: #fff;
@@ -96,6 +99,48 @@ input:focus-visible {
     box-shadow: 0 0 0 3px rgb(79 135 208 / 12%);
 }
 
+.button-copy {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    display: grid;
+    width: 42px;
+    min-height: 42px;
+    padding: 8px;
+    border: 0;
+    border-radius: 8px;
+    place-items: center;
+    transform: translateY(-50%);
+    background: transparent;
+    color: #4f87d0;
+    cursor: pointer;
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+.button-copy:hover {
+    border-color: transparent;
+    background: #edf4ff;
+    color: #2f6fbe;
+}
+
+.button-copy:active {
+    transform: translateY(-50%);
+}
+
+.button-copy svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.button-copy.is-copied {
+    color: #248a52;
+}
+
 .input-error {
     display: none;
     margin-top: 8px;
@@ -112,7 +157,7 @@ input:focus-visible {
     margin-top: 20px;
 }
 
-button {
+.button-clear {
     width: 100%;
     min-height: 56px;
     padding: 14px 20px;
@@ -126,12 +171,12 @@ button {
     transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
-button:hover {
+.button-clear:hover {
     border-color: #4f87d0;
     background: #f5f9ff;
 }
 
-button:active {
+.button-clear:active {
     transform: translateY(1px);
 }
 
