@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const inputPx = document.querySelector('.input-px');
     const inputRem = document.querySelector('.input-rem');
     const buttonClear = document.querySelector('.button-clear');
+    const buttonHistoryClear = document.querySelector('.button-history-clear');
     const copyButtons = document.querySelectorAll('.button-copy');
     const error = document.querySelector('.input-error');
     const historyList = document.querySelector('.conversion-history__list');
@@ -84,8 +85,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
         history.forEach(({px, rem}) => {
             const item = document.createElement('div');
+            const value = document.createElement('span');
+            const copyButton = document.createElement('button');
+            const remValue = rem + 'rem';
+
             item.className = 'conversion-history__item';
-            item.textContent = `${px}px = ${rem}rem`;
+            value.textContent = px + 'px = ' + remValue;
+            copyButton.className = 'button-history-copy';
+            copyButton.type = 'button';
+            copyButton.setAttribute('aria-label', 'Копировать ' + remValue);
+            copyButton.title = 'Копировать значение';
+            copyButton.dataset.copyValue = remValue;
+            copyButton.innerHTML = `
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                    <rect x="9" y="9" width="10" height="10" rx="2"></rect>
+                    <path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2 2v8"></path>
+                </svg>
+            `;
+
+            item.append(value, copyButton);
             historyList.append(item);
         });
     }
@@ -257,6 +275,46 @@ window.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             copyInputValue(input, button);
         });
+    });
+
+    historyList.addEventListener('click', async (event) => {
+        const button = event.target.closest('.button-history-copy');
+
+        if (!button) {
+            return;
+        }
+
+        const value = button.dataset.copyValue;
+
+        try {
+            await navigator.clipboard.writeText(value);
+        } catch {
+            const textArea = document.createElement('textarea');
+
+            textArea.value = value;
+            textArea.setAttribute('readonly', '');
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.append(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            textArea.remove();
+        }
+
+        button.classList.add('is-copied');
+        button.setAttribute('aria-label', 'Значение скопировано');
+        button.title = 'Значение скопировано';
+
+        setTimeout(() => {
+            button.classList.remove('is-copied');
+            button.setAttribute('aria-label', 'Копировать ' + value);
+            button.title = 'Копировать значение';
+        }, 1200);
+    });
+
+    buttonHistoryClear.addEventListener('click', () => {
+        localStorage.removeItem(HISTORY_STORAGE_KEY);
+        renderHistory([]);
     });
 
     renderHistory();
