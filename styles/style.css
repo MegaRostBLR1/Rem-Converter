@@ -208,11 +208,12 @@ button:hover {
 }
 
 .conversion-history__item {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 8px 10px;
+    padding: 8px 60px 8px 10px;
     border-radius: 6px;
     background: #EDF4FF;
     font-size: 14px;
