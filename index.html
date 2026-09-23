@@ -1,42 +1,86 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rem to Px</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Простой конвертер px в rem и rem в px.">
+    <title>Rem Конвертер</title>
     <link rel="stylesheet" href="styles/style.css">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 </head>
 <body>
-<section class="main">
+<main class="main">
     <div class="container">
         <h1 class="title">Rem Конвертер</h1>
+
         <div class="converter-body">
             <div class="input-container">
-                <label class="input-label">Величина шрифта HTML документа
-                    <input class="input-base" type="text" inputmode="decimal" name="input-base" value="16" autocomplete="off">
+                <label class="input-label" for="input-base">
+                    Величина шрифта HTML документа
+                    <input
+                        class="input-base"
+                        id="input-base"
+                        type="text"
+                        inputmode="decimal"
+                        name="input-base"
+                        value="16"
+                        autocomplete="off"
+                        aria-describedby="input-error"
+                    >
                 </label>
             </div>
-            <div class="input-error">Введите величину шрифта</div>
+
+            <p class="input-error" id="input-error" role="alert">
+                Введите величину шрифта больше 0
+            </p>
+
             <div class="input-container">
-                <label class="input-label">px
-                    <input class="input-px" type="text" inputmode="decimal" name="input-px" value="16" autocomplete="off">
+                <label class="input-label" for="input-px">
+                    px
+                    <input
+                        class="input-px"
+                        id="input-px"
+                        type="text"
+                        inputmode="decimal"
+                        name="input-px"
+                        value="16"
+                        autocomplete="off"
+                    >
                 </label>
             </div>
+
             <div class="input-container">
-                <label class="input-label">rem
-                    <input class="input-rem" type="text" inputmode="decimal" name="input-rem" value="1" autocomplete="off">
+                <label class="input-label" for="input-rem">
+                    rem
+                    <input
+                        class="input-rem"
+                        id="input-rem"
+                        type="text"
+                        inputmode="decimal"
+                        name="input-rem"
+                        value="1"
+                        autocomplete="off"
+                    >
                 </label>
             </div>
+
             <div class="button-container">
-                <button class="button-clear">Очистить</button>
+                <button class="button-clear" type="button">Очистить</button>
             </div>
-            <div class="converter-author">Developed by&nbsp;<a class="converter-author__link" href="https://t.me/RostITFreelance" target="_blank">Rostislav Yakubovsky</a></div>
+
+            <div class="converter-author">
+                Developed by&nbsp;
+                <a
+                    class="converter-author__link"
+                    href="https://t.me/RostITFreelance"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >Rostislav Yakubovsky</a>
+            </div>
         </div>
     </div>
-</section>
+</main>
+
 <script src="scripts/script.js"></script>
 </body>
 </html>

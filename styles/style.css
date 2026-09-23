@@ -5,101 +5,166 @@
 }
 
 @font-face {
-    font-family: "Monserrat-Regular";
-    src: url("../fonts/Montserrat-Regular.ttf");
+    font-family: "Montserrat";
+    src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
+:root {
+    font-family: "Montserrat", sans-serif;
+    color: #172033;
+    background: #b9d5fd;
 }
 
 body {
-    font-family: 'Monserrat-Regular', sans-serif;
-    font-weight: 400;
+    min-width: 320px;
+    min-height: 100vh;
+    min-height: 100svh;
     font-size: 16px;
 }
 
 .main {
-    display: flex;
-    align-items: center;
-    background: #B9D5FD;
-    height: 100vh;
+    display: grid;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 24px 16px;
+    place-items: center;
+    background: linear-gradient(145deg, #b9d5fd 0%, #dceaff 100%);
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: min(100%, 440px);
 }
 
 .title {
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: clamp(28px, 7vw, 40px);
+    line-height: 1.1;
 }
 
-.input-container:not(:first-child) {
-    margin-top: 10px;
+.converter-body {
+    padding: 24px;
+    border: 1px solid rgb(255 255 255 / 70%);
+    border-radius: 20px;
+    background: rgb(255 255 255 / 86%);
+    box-shadow: 0 18px 50px rgb(52 86 130 / 16%);
+    backdrop-filter: blur(10px);
+}
+
+.input-container + .input-container {
+    margin-top: 12px;
 }
 
 .input-label {
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    color: #34415a;
+    font-size: 14px;
+    line-height: 1.35;
 }
 
 input {
-    display: flex;
-    align-items: center;
-    border: 2px solid #709FDC;
-    padding: 20px 15px;
-    border-radius: 10px;
-    font-family: 'Monserrat', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 130%;
+    width: 100%;
+    min-height: 60px;
+    padding: 15px;
+    border: 2px solid #709fdc;
+    border-radius: 12px;
+    background: #fff;
+    color: #172033;
+    font: inherit;
+    font-size: 18px;
+    line-height: 1.3;
     outline: none;
-    margin-top: 2px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 input:hover {
-    border: 3px solid #709FDC;
-    padding: 19px 14px;
+    border-color: #4f87d0;
+}
+
+input:focus-visible,
+button:focus-visible,
+.converter-author__link:focus-visible {
+    outline: 3px solid rgb(79 135 208 / 28%);
+    outline-offset: 2px;
+}
+
+input:focus-visible {
+    border-color: #4f87d0;
+    box-shadow: 0 0 0 3px rgb(79 135 208 / 12%);
 }
 
 .input-error {
     display: none;
-    color: #f30000;
+    margin-top: 8px;
+    color: #c62828;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.input-error.is-visible {
+    display: block;
 }
 
 .button-container {
-    display: flex;
-    align-items: center;
+    margin-top: 20px;
 }
 
 button {
-    display: block;
-    padding: 20px 15px;
     width: 100%;
+    min-height: 56px;
+    padding: 14px 20px;
+    border: 2px solid #709fdc;
+    border-radius: 12px;
+    background: #fff;
+    color: #172033;
     cursor: pointer;
-    border: 2px solid #709FDC;
-    border-radius: 10px;
-    font-family: "Monserrat-Regular", sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    outline: none;
-    margin-top: 20px;
-    background-color: #FFFFFF;
+    font: inherit;
+    font-weight: 600;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
 button:hover {
-    border: 3px solid #709FDC;
-    padding: 19px 14px;
+    border-color: #4f87d0;
+    background: #f5f9ff;
+}
+
+button:active {
+    transform: translateY(1px);
 }
 
 .converter-author {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    font-size: 8px;
+    margin-top: 16px;
+    color: #6d7890;
+    font-size: 10px;
+    text-align: center;
 }
 
 .converter-author__link {
+    color: inherit;
     text-decoration: none;
-    color: #000000;
+}
+
+.converter-author__link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .main {
+        padding: 16px 12px;
+    }
+
+    .converter-body {
+        padding: 20px 16px;
+        border-radius: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    input,
+    button {
+        transition: none;
+    }
 }
