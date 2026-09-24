@@ -103,13 +103,6 @@ input:hover {
     padding: 19px 57px 19px 14px;
 }
 
-input:focus-visible,
-button:focus-visible,
-a:focus-visible {
-    outline: 3px solid #4F87D0;
-    outline-offset: 2px;
-}
-
 .input-error {
     display: none;
     color: #f30000;
