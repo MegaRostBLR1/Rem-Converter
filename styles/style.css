@@ -98,10 +98,6 @@ input {
     margin-top: 2px;
 }
 
-input:hover {
-    border: 3px solid #709FDC;
-    padding: 19px 57px 19px 14px;
-}
 
 input:focus-visible,
 button:focus-visible,
@@ -339,9 +335,6 @@ button:hover {
         padding: 16px 56px 16px 12px;
     }
 
-    input:hover {
-        padding: 15px 55px 15px 11px;
-    }
 
     button {
         padding: 16px 12px;
@@ -378,9 +371,6 @@ button:hover {
         padding-right: 54px;
     }
 
-    input:hover {
-        padding-right: 53px;
-    }
 
     .button-copy,
     .button-history-copy {
