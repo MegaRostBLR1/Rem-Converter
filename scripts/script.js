@@ -292,7 +292,7 @@ window.addEventListener('DOMContentLoaded', () => {
         try {
             localStorage.removeItem(HISTORY_STORAGE_KEY);
         } catch {
-            return;
+            // Storage may be unavailable; clear the visible history anyway.
         }
 
         renderHistory([]);
