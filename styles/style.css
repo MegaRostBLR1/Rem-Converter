@@ -98,8 +98,6 @@ input {
     margin-top: 2px;
 }
 
-
-input:focus-visible,
 button:focus-visible,
 a:focus-visible {
     outline: 3px solid #4F87D0;
@@ -335,7 +333,6 @@ button:hover {
         padding: 16px 56px 16px 12px;
     }
 
-
     button {
         padding: 16px 12px;
     }
@@ -370,7 +367,6 @@ button:hover {
     input {
         padding-right: 54px;
     }
-
 
     .button-copy,
     .button-history-copy {
