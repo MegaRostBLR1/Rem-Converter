@@ -95,16 +95,15 @@ input {
     font-size: 16px;
     line-height: 130%;
     outline: none;
-    box-shadow: none;
     margin-top: 2px;
 }
 
-input:focus,
-input:focus-visible {
-    outline: none;
-    box-shadow: none;
+input:hover {
+    border: 3px solid #709FDC;
+    padding: 19px 57px 19px 14px;
 }
 
+input:focus-visible,
 button:focus-visible,
 a:focus-visible {
     outline: 3px solid #4F87D0;
@@ -340,6 +339,10 @@ button:hover {
         padding: 16px 56px 16px 12px;
     }
 
+    input:hover {
+        padding: 15px 55px 15px 11px;
+    }
+
     button {
         padding: 16px 12px;
     }
@@ -373,6 +376,10 @@ button:hover {
 
     input {
         padding-right: 54px;
+    }
+
+    input:hover {
+        padding-right: 53px;
     }
 
     .button-copy,
