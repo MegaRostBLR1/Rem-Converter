@@ -9,10 +9,16 @@
     src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
 }
 
+html {
+    min-width: 320px;
+}
+
 body {
+    min-width: 320px;
     font-family: "Montserrat-Regular", sans-serif;
     font-weight: 400;
     font-size: 16px;
+    overflow-x: hidden;
 }
 
 .main {
@@ -20,6 +26,7 @@ body {
     align-items: center;
     background: #B9D5FD;
     min-height: 100vh;
+    min-height: 100svh;
 }
 
 .page-layout {
@@ -28,28 +35,33 @@ body {
     justify-content: center;
     gap: 40px;
     width: 100%;
+    min-width: 0;
     padding: 24px;
 }
 
 .container {
     display: grid;
-    grid-template-columns: minmax(0, 400px) 400px;
+    grid-template-columns: minmax(0, 400px) minmax(0, 400px);
     align-items: start;
     justify-content: center;
     gap: 40px;
     width: 100%;
-    max-width: 1200px;
+    max-width: 840px;
+    min-width: 0;
     margin: 0 auto;
 }
 
 .title {
     grid-column: 1 / -1;
+    min-width: 0;
     margin-bottom: 0;
     text-align: center;
+    overflow-wrap: anywhere;
 }
 
 .converter-body {
     width: 100%;
+    min-width: 0;
     padding: 20px;
     border: 2px solid #709FDC;
     border-radius: 10px;
@@ -62,17 +74,19 @@ body {
 
 .input-label {
     display: block;
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .input-wrapper {
     position: relative;
+    min-width: 0;
 }
 
 input {
-    display: flex;
-    align-items: center;
+    display: block;
     width: 100%;
+    min-width: 0;
     border: 2px solid #709FDC;
     padding: 20px 58px 20px 15px;
     border-radius: 10px;
@@ -89,9 +103,17 @@ input:hover {
     padding: 19px 57px 19px 14px;
 }
 
+input:focus-visible,
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #4F87D0;
+    outline-offset: 2px;
+}
+
 .input-error {
     display: none;
     color: #f30000;
+    overflow-wrap: anywhere;
 }
 
 .input-error.is-visible {
@@ -101,12 +123,15 @@ input:hover {
 .button-container {
     display: flex;
     align-items: center;
+    min-width: 0;
 }
 
 button {
     display: block;
     padding: 20px 15px;
     width: 100%;
+    min-width: 0;
+    min-height: 44px;
     cursor: pointer;
     border: 2px solid #709FDC;
     border-radius: 10px;
@@ -129,8 +154,9 @@ button:hover {
     top: 50%;
     right: 8px;
     display: grid;
-    width: 42px;
-    min-height: 42px;
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
     margin: 0;
     padding: 8px;
     border: 0;
@@ -176,6 +202,7 @@ button:hover {
     position: absolute;
     bottom: calc(100% + 8px);
     left: 50%;
+    max-width: calc(100vw - 32px);
     padding: 6px 10px;
     border-radius: 6px;
     background: #709FDC;
@@ -183,8 +210,9 @@ button:hover {
     content: attr(data-tooltip);
     font-family: "Montserrat-Regular", sans-serif;
     font-size: 12px;
-    line-height: 1;
-    white-space: nowrap;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
     opacity: 0;
     pointer-events: none;
     transform: translate(-50%, 4px);
@@ -200,13 +228,16 @@ button:hover {
 .converter-author {
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
     margin-top: 10px;
     font-size: 8px;
+    overflow-wrap: anywhere;
 }
 
 .converter-author__link {
     text-decoration: none;
     color: #000000;
+    overflow-wrap: anywhere;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -218,6 +249,7 @@ button:hover {
 
 .conversion-history {
     width: 100%;
+    min-width: 0;
     padding: 20px;
     border: 2px solid #709FDC;
     border-radius: 10px;
@@ -229,19 +261,23 @@ button:hover {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    min-width: 0;
     margin-bottom: 15px;
 }
 
 .conversion-history__title {
+    min-width: 0;
     margin: 0;
     font-size: 18px;
     font-weight: 400;
+    overflow-wrap: anywhere;
 }
 
 .conversion-history__list {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 0;
 }
 
 .conversion-history__item {
@@ -249,6 +285,7 @@ button:hover {
     display: flex;
     align-items: center;
     width: 100%;
+    min-width: 0;
     min-height: 54px;
     padding: 12px 58px 12px 15px;
     border: 2px solid #709FDC;
@@ -260,21 +297,97 @@ button:hover {
     line-height: 130%;
 }
 
-@media (max-width: 800px) {
+.conversion-history__item span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 840px) {
     .page-layout {
-        flex-direction: column;
+        padding: 20px;
     }
 
     .container {
         grid-template-columns: minmax(0, 440px);
+        max-width: 440px;
     }
 
     .title {
         grid-column: 1;
     }
+}
+
+@media (max-width: 480px) {
+    .page-layout {
+        padding: 12px;
+    }
 
     .converter-body,
     .conversion-history {
-        width: 100%;
+        padding: 16px;
+    }
+
+    .container {
+        gap: 24px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    input {
+        padding: 16px 56px 16px 12px;
+    }
+
+    input:hover {
+        padding: 15px 55px 15px 11px;
+    }
+
+    button {
+        padding: 16px 12px;
+    }
+
+    button:hover {
+        padding: 15px 12px;
+    }
+
+    .conversion-history__item {
+        padding: 12px 56px 12px 12px;
+    }
+
+    .conversion-history__title {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    .page-layout {
+        padding: 8px;
+    }
+
+    .converter-body,
+    .conversion-history {
+        padding: 12px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    input {
+        padding-right: 54px;
+    }
+
+    input:hover {
+        padding-right: 53px;
+    }
+
+    .button-copy,
+    .button-history-copy {
+        right: 4px;
+    }
+
+    .conversion-history__item {
+        padding-right: 54px;
     }
 }
