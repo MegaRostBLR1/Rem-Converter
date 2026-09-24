@@ -2,11 +2,18 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Простой конвертер px в rem и rem в px.">
+    <meta name="theme-color" content="#B9D5FD">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Rem Конвертер">
     <title>Rem Конвертер</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="images/favicon.svg">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
 <main class="main">
@@ -14,103 +21,111 @@
         <div class="container">
             <h1 class="title">Rem Конвертер</h1>
 
-        <div class="converter-body">
-            <div class="input-container">
-                <label class="input-label" for="input-base">
-                    Величина шрифта HTML документа
-                </label>
-                <div class="input-wrapper">
-                    <input
-                        class="input-base"
-                        id="input-base"
-                        type="text"
-                        inputmode="decimal"
-                        name="input-base"
-                        value="16px"
-                        autocomplete="off"
-                        aria-describedby="input-error"
-                        spellcheck="false"
-                    >
+            <div class="converter-body">
+                <div class="input-container">
+                    <label class="input-label" for="input-base">
+                        Величина шрифта HTML документа
+                    </label>
+                    <div class="input-wrapper">
+                        <input
+                            class="input-base"
+                            id="input-base"
+                            type="text"
+                            inputmode="decimal"
+                            name="input-base"
+                            value="16px"
+                            autocomplete="off"
+                            aria-describedby="input-error"
+                            spellcheck="false"
+                        >
+                    </div>
+                </div>
+
+                <p class="input-error" id="input-error" role="alert">
+                    Введите величину шрифта больше 0
+                </p>
+
+                <div class="input-container">
+                    <label class="input-label" for="input-px">
+                        px
+                    </label>
+                    <div class="input-wrapper">
+                        <input
+                            class="input-px"
+                            id="input-px"
+                            type="text"
+                            inputmode="decimal"
+                            name="input-px"
+                            value="16px"
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <button class="button-copy" type="button" aria-label="Копировать значение" title="Копировать значение" data-copy-target="input-px">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                                <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <label class="input-label" for="input-rem">
+                        rem
+                    </label>
+                    <div class="input-wrapper">
+                        <input
+                            class="input-rem"
+                            id="input-rem"
+                            type="text"
+                            inputmode="decimal"
+                            name="input-rem"
+                            value="1rem"
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <button class="button-copy" type="button" aria-label="Копировать значение" title="Копировать значение" data-copy-target="input-rem">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                                <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                                <path d="M16 8V6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button class="button-clear" type="button">Очистить</button>
+                </div>
+
+                <div class="converter-author">
+                    Developed by&nbsp;
+                    <a
+                        class="converter-author__link"
+                        href="https://t.me/RostITFreelance"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >Rostislav Yakubovsky</a>
                 </div>
             </div>
 
-            <p class="input-error" id="input-error" role="alert">
-                Введите величину шрифта больше 0
-            </p>
-
-            <div class="input-container">
-                <label class="input-label" for="input-px">
-                    px
-                </label>
-                <div class="input-wrapper">
-                    <input
-                        class="input-px"
-                        id="input-px"
-                        type="text"
-                        inputmode="decimal"
-                        name="input-px"
-                        value="16px"
-                        autocomplete="off"
-                        spellcheck="false"
-                    >
-                    <button class="button-copy" type="button" aria-label="Копировать значение" title="Копировать значение" data-copy-target="input-px">
-                        <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
-                            <rect x="8" y="8" width="11" height="11" rx="2"></rect>
-                            <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
-                        </svg>
-                    </button>
+            <aside class="conversion-history" aria-labelledby="history-title">
+                <div class="conversion-history__header">
+                    <h2 class="conversion-history__title" id="history-title">Используемые значения</h2>
                 </div>
-            </div>
-
-            <div class="input-container">
-                <label class="input-label" for="input-rem">
-                    rem
-                </label>
-                <div class="input-wrapper">
-                    <input
-                        class="input-rem"
-                        id="input-rem"
-                        type="text"
-                        inputmode="decimal"
-                        name="input-rem"
-                        value="1rem"
-                        autocomplete="off"
-                        spellcheck="false"
-                    >
-                    <button class="button-copy" type="button" aria-label="Копировать значение" title="Копировать значение" data-copy-target="input-rem">
-                        <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
-                            <rect x="8" y="8" width="11" height="11" rx="2"></rect>
-                            <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="button-container">
-                <button class="button-clear" type="button">Очистить</button>
-            </div>
-
-            <div class="converter-author">
-                Developed by&nbsp;
-                <a
-                    class="converter-author__link"
-                    href="https://t.me/RostITFreelance"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >Rostislav Yakubovsky</a>
-            </div>
+                <div class="conversion-history__list"></div>
+                <button class="button-history-clear" type="button">Очистить</button>
+            </aside>
         </div>
-
-        <aside class="conversion-history" aria-labelledby="history-title">
-            <div class="conversion-history__header">
-                <h2 class="conversion-history__title" id="history-title">Используемые значения</h2>
-            </div>
-            <div class="conversion-history__list"></div>
-            <button class="button-history-clear" type="button">Очистить</button>
-        </aside>
     </div>
 </main>
 
 <script src="scripts/script.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js');
+        });
+    }
+</script>
 </body>
 </html>
