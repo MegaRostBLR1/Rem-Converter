@@ -1,0 +1,20 @@
+{
+    "name": "Rem Конвертер",
+    "short_name": "Rem",
+    "description": "Простой конвертер px в rem и rem в px.",
+    "lang": "ru",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#B9D5FD",
+    "theme_color": "#B9D5FD",
+    "icons": [
+        {
+            "src": "images/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}
