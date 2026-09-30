@@ -4,25 +4,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const inputRem = document.querySelector('.input-rem');
     const buttonClear = document.querySelector('.button-clear');
     const buttonHistoryClear = document.querySelector('.button-history-clear');
-    const copyButtons = document.querySelectorAll('.button-copy');
     const error = document.querySelector('.input-error');
     const historyList = document.querySelector('.conversion-history__list');
     const numericInputs = [inputBase, inputPx, inputRem];
 
-    function getInputUnit(input) {
-        if (input === inputBase || input === inputPx) {
-            return 'px';
-        }
-
-        if (input === inputRem) {
-            return 'rem';
-        }
-
-        return '';
-    }
-
     function sanitizeInput(value, input) {
-        const unit = getInputUnit(input);
+        const unit = input.dataset.unit;
         const valueWithoutUnit = unit
             ? value.replace(new RegExp(unit + '$', 'i'), '')
             : value;
@@ -230,15 +217,10 @@ window.addEventListener('DOMContentLoaded', () => {
         setError(false);
     }
 
-    async function copyInputValue(input, button) {
-        const value = input.value.trim();
-
-        if (!value) {
-            return;
-        }
-
+    async function copyToClipboard(value) {
         try {
             await navigator.clipboard.writeText(value);
+            return true;
         } catch {
             const textArea = document.createElement('textarea');
 
@@ -248,10 +230,15 @@ window.addEventListener('DOMContentLoaded', () => {
             textArea.style.opacity = '0';
             document.body.append(textArea);
             textArea.select();
-            document.execCommand('copy');
-            textArea.remove();
-        }
 
+            const copied = document.execCommand('copy');
+            textArea.remove();
+
+            return copied;
+        }
+    }
+
+    function showCopiedState(button, defaultLabel) {
         button.classList.add('is-copied');
         button.dataset.tooltip = 'Скопировано';
         button.setAttribute('aria-label', 'Значение скопировано');
@@ -260,9 +247,21 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             button.classList.remove('is-copied');
             delete button.dataset.tooltip;
-            button.setAttribute('aria-label', 'Копировать значение');
+            button.setAttribute('aria-label', defaultLabel);
             button.setAttribute('title', 'Копировать значение');
         }, 1000);
+    }
+
+    async function handleCopy(button, value, defaultLabel) {
+        if (!value) {
+            return;
+        }
+
+        const copied = await copyToClipboard(value);
+
+        if (copied) {
+            showCopiedState(button, defaultLabel);
+        }
     }
 
     numericInputs.forEach((input) => {
@@ -271,53 +270,31 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    copyButtons.forEach((button) => {
-        const input = document.getElementById(button.dataset.copyTarget);
-
-        button.addEventListener('click', () => {
-            copyInputValue(input, button);
-        });
-    });
-
-    historyList.addEventListener('click', async (event) => {
-        const button = event.target.closest('.button-history-copy');
+    document.addEventListener('click', (event) => {
+        const button = event.target.closest('.button-copy, .button-history-copy');
 
         if (!button) {
             return;
         }
 
-        const value = button.dataset.copyValue;
+        const input = button.dataset.copyTarget
+            ? document.getElementById(button.dataset.copyTarget)
+            : null;
+        const value = input ? input.value.trim() : button.dataset.copyValue;
+        const defaultLabel = button.classList.contains('button-history-copy')
+            ? 'Копировать ' + value
+            : 'Копировать значение';
 
-        try {
-            await navigator.clipboard.writeText(value);
-        } catch {
-            const textArea = document.createElement('textarea');
-
-            textArea.value = value;
-            textArea.setAttribute('readonly', '');
-            textArea.style.position = 'fixed';
-            textArea.style.opacity = '0';
-            document.body.append(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            textArea.remove();
-        }
-
-        button.classList.add('is-copied');
-        button.dataset.tooltip = 'Скопировано';
-        button.setAttribute('aria-label', 'Значение скопировано');
-        button.title = 'Значение скопировано';
-
-        setTimeout(() => {
-            button.classList.remove('is-copied');
-            delete button.dataset.tooltip;
-            button.setAttribute('aria-label', 'Копировать ' + value);
-            button.title = 'Копировать значение';
-        }, 1000);
+        handleCopy(button, value, defaultLabel);
     });
 
     buttonHistoryClear.addEventListener('click', () => {
-        localStorage.removeItem(HISTORY_STORAGE_KEY);
+        try {
+            localStorage.removeItem(HISTORY_STORAGE_KEY);
+        } catch {
+            return;
+        }
+
         renderHistory([]);
     });
 
